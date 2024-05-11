@@ -23,8 +23,8 @@ class TransactionStoreRequest extends FormRequest
             'user_id' => ['required','not_in:0','exists:users,id'],
             //'transaction_type' => ['required'],
             'amount' => ['required','not_in:0','numeric'],
-            'fee' => ['not_in:-1','numeric'],
-            'date' => ['required','date'],
+            //'fee' => ['not_in:-1','numeric'],
+            //'date' => ['required','date'],
         ];
     }
 }
