@@ -11,6 +11,8 @@
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
+        "jasonmccreary/laravel-test-assertions": "^0.1.0",
+        "laravel-shift/blueprint": "^2.10",
         "laravel/pint": "^1.13",
         "laravel/sail": "^1.26",
         "mockery/mockery": "^1.6",
