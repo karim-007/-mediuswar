@@ -9,6 +9,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -21,7 +22,12 @@ class UserController extends Controller
 
     public function store(UserStoreRequest $request): UserResource
     {
-        $user = User::create($request->validated());
+        $data = $request->except(['password']);
+        $password = Hash::make($request->password);
+        $data += [
+            'password' => $password,
+        ];
+        $user = User::create($data);
 
         return new UserResource($user);
     }
