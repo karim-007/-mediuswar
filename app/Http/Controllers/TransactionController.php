@@ -9,6 +9,7 @@ use App\Http\Resources\TransactionResource;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class TransactionController extends Controller
 {
@@ -19,11 +20,26 @@ class TransactionController extends Controller
         return new TransactionCollection($transactions);
     }
 
+    /*
+     * method for user deposit amount
+     * */
     public function store(TransactionStoreRequest $request): TransactionResource
     {
-        $transaction = Transaction::create($request->validated());
-
-        return new TransactionResource($transaction);
+        DB::beginTransaction();
+        try {
+            $data = $request->validated();
+            $data +=[
+                'transaction_type'=>'Deposit'
+            ];
+            $transaction = Transaction::create($data);
+            $user = auth('api')->user();
+            $user->update(['balance'=>$user->balance+$data['amount']]);
+            DB::commit();
+            return new TransactionResource($transaction);
+        }catch (\Exception $e){
+            DB::rollBack();
+            return response()->json(['status'=>'fail','message'=>"transaction fail"],404);
+        }
     }
 
     public function show(Request $request, Transaction $transaction): TransactionResource
