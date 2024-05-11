@@ -44,4 +44,25 @@ class TransactionController extends Controller
 
         return response()->noContent();
     }
+
+    public function allTransactions(Request $request)
+    {
+        $user = auth('api')->user();
+        $transactions = Transaction::where('user_id',$user->id)->get(['id','user_id', 'transaction_type', 'amount', 'fee', 'date']);
+        return response()->json(['data'=>$transactions,'current_balance'=>$user->balance],200);
+    }
+
+    public function depositTransactions(Request $request)
+    {
+        $user = auth('api')->user();
+        $transactions = Transaction::where(['user_id'=>$user->id,'transaction_type'=>'Deposit'])->get();
+        return TransactionResource::collection($transactions);
+    }
+
+    public function withdrawTransactions(Request $request)
+    {
+        $user = auth('api')->user();
+        $transactions = Transaction::where(['user_id'=>$user->id,'transaction_type'=>'Withdrawal'])->get();
+        return TransactionResource::collection($transactions);
+    }
 }

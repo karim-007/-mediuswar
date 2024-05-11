@@ -14,6 +14,9 @@ Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'authe
 
 Route::group(['middleware' => ['auth:api']], function (){
 
-    Route::post('users', [App\Http\Controllers\UserController::class,'store']);
+    Route::post('/users', [App\Http\Controllers\UserController::class,'store']);
+    Route::get('/show', [App\Http\Controllers\TransactionController::class,'allTransactions']);
+    Route::get('/deposit', [App\Http\Controllers\TransactionController::class,'depositTransactions']);
+    Route::get('/withdrawal', [App\Http\Controllers\TransactionController::class,'withdrawTransactions']);
 
 });
