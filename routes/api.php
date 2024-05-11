@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 Route::post('/login', [\App\Http\Controllers\Auth\LoginController::class, 'authentication']);
 
 Route::group(['middleware' => ['auth:api']], function (){
-
+    
     Route::post('/users', [App\Http\Controllers\UserController::class,'store']);
     Route::get('/show', [App\Http\Controllers\TransactionController::class,'allTransactions']);
     Route::get('/deposit', [App\Http\Controllers\TransactionController::class,'depositTransactions']);
